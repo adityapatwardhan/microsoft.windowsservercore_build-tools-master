@@ -46,7 +46,7 @@ function Write-TestResults
                 }
             }
         }
-    }        
+    }
 }
 $repoName = &"$psscriptroot\..\reponame.ps1"
 Describe "Tests in Container $repoName pass"{
@@ -54,14 +54,13 @@ Describe "Tests in Container $repoName pass"{
         $resultFileName = 'results.xml'
         $resolvedTestDrive = (Resolve-Path "Testdrive:\").providerPath
         $resolvedXmlPath = Join-Path $resolvedTestDrive -ChildPath $resultFileName
-        $containerTestDrive = 'C:\test'        
+        $containerTestDrive = 'C:\test'
         $containerXmlPath = Join-Path $containerTestDrive -ChildPath $resultFileName
     }
-    BeforeEach
-    {
+    BeforeEach {
         Remove-Item $resolvedXmlPath -ErrorAction SilentlyContinue
     }
-    
+
     it "Running tests should produce xml" {
         docker run --rm -v "${resolvedTestDrive}:$containerTestDrive" $repoName Invoke-Pester .\containerFiles\Tests -OutputFile $containerXmlPath -OutputFormat NUnitXml
         $resolvedXmlPath | should exist
